@@ -1,0 +1,21 @@
+select.listlink-sel option:disabled::before {
+	content: '\1F517 ';
+}
+
+input.listlink-value {
+	display: none !important;
+}
+
+.listlink-btn-wrap > div {
+	text-align:	center;
+}
+
+.listlink-tbl-wrap > div > table {
+	margin-left:	auto;
+	margin-right:	auto;
+}
+
+.listlink-table > tbody > tr > td {
+	padding-left:	1em;
+	padding-right:	1em;
+}
