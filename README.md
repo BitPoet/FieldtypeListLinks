@@ -4,7 +4,7 @@ Fieldtype/Inputfield for mapping items from two lists 1:1 for the ProcessWire CM
 
 # Stability
 
-Alpha - do not use in production environments
+Experimental - do not use in production environments
 
 # Description
 
