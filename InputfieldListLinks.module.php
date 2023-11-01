@@ -2,14 +2,14 @@
 
 class InputfieldListLinks extends Inputfield implements Module {
 
-	protected $leftOptions = array();
-	protected $rightOptions = array();
-	
+	protected $leftOptions = [];
+	protected $rightOptions = [];
+
 	public static function getModuleInfo() {
 		return [
 			'title'			=>	__('List Link Inputfield', __FILE__),
 			'summary'		=>	__('Inputfield for mapping values between two lists'),
-			'version'		=>	'0.0.1',
+			'version'		=>	'0.0.2',
 			'icon'			=>	'link',
 			'requires'		=>	'FieldtypeListLinks'
 		];
@@ -21,10 +21,11 @@ class InputfieldListLinks extends Inputfield implements Module {
 		$this->set('linkSelectRows', 8);
 		$this->set('leftLabel', $this->_('Left'));
 		$this->set('rightLabel', $this->_('Right'));
+		$this->set('buttonText', $this->_('Link Items'));
 	}
 
 	public function addLeftOption($value, $label = null) {
-		$this->leftOptions[$value] = $label ?: $value;
+		$this->leftOptions[$value] = $label == null ? $value : $label;
 	}
 
 	public function addRightOption($value, $label = null) {
@@ -78,11 +79,13 @@ class InputfieldListLinks extends Inputfield implements Module {
 		$mrk->label = $this->leftLabel;
 		$mrk->columnWidth = 50;
 		$left = "";
+		//$this->log(json_encode($this->leftOptions));
 		foreach($this->leftOptions as $opt => $label) {
+			//$this->log(sprintf('Adding option to left select: value="%s", label="%s"', $opt, $label));
 			$state = $value->isAssigned($opt) ? 'disabled' : '';
 			$left .= "<option value='$opt' $state>$label</option>";
 		}
-		$mrk->attr('value', "<select id='{$name}__left' class='listlink-sel' name='{$name}__left' size=8>" . $left . "</select>");
+		$mrk->attr('value', "<select id='{$name}__left' class='listlink-sel' name='{$name}__left' size={$this->linkSelectRows} style='min-height: {$this->linkSelectRows}em;'>" . $left . "</select>");
 		$wrap->add($mrk);
 		
 		$mrk = $this->modules->get('InputfieldMarkup');
@@ -93,7 +96,7 @@ class InputfieldListLinks extends Inputfield implements Module {
 			$state = $value->hasAssignment($opt) ? 'disabled' : '';
 			$right .= "<option value='$opt' $state>$label</option>";
 		}
-		$mrk->attr('value', "<select id='{$name}__right' class='listlink-sel' name='{$name}__right' size=8>" . $right . "</select>");
+		$mrk->attr('value', "<select id='{$name}__right' class='listlink-sel' name='{$name}__right' size={$this->linkSelectRows} style='min-height: {$this->linkSelectRows}em;'>" . $right . "</select>");
 		$wrap->add($mrk);
 		
 		$mrk = $this->modules->get('InputfieldMarkup');
@@ -103,7 +106,7 @@ class InputfieldListLinks extends Inputfield implements Module {
 		$btn->attr('id+name', "{$name}__assign");
 		$btn->addClass('listlink-assign ui-priority-secondary');
 		$btn->attr("data-name", $name);
-		$btn->set('html', '&#x2193; ' . $this->_('Link selected items') . ' &#x2193;');
+		$btn->set('html', '&#x2193; ' . $this->buttonText . ' &#x2193;');
 		$mrk->attr('value', $btn->render());
 		$wrap->add($mrk);
 		
@@ -196,6 +199,13 @@ class InputfieldListLinks extends Inputfield implements Module {
 		$f->columnWidth = 50;
 		$inputfields->append($f);
 		
+		$f = $this->modules->get('InputfieldText');
+		$f->attr('name', 'buttonText');
+		$f->label = $this->_("Text for Button to Link Items");
+		$f->attr('value', $this->buttonText);
+		$f->columnWidth = 50;
+		$inputfields->append($f);
+
 		return $inputfields;
 		
 	}

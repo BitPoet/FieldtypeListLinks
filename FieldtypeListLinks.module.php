@@ -20,12 +20,13 @@ class FieldtypeListLinks extends Fieldtype implements Module {
 		
 		require_once(__DIR__ . '/ListLink.php');
 		
+		/*
 		$optPath = $this->config->paths->FieldtypeOptions;
 		
 		require_once($optPath . 'SelectableOption.php');
 		require_once($optPath . 'SelectableOptionArray.php');
 		require_once($optPath . 'SelectableOptionManager.php');
-		
+		*/
 		$this->set('leftOptionsConfig', '');
 		$this->set('rightOptionsConfig', '');
 		
@@ -36,9 +37,9 @@ class FieldtypeListLinks extends Fieldtype implements Module {
 		
 		$schema = parent::getDatabaseSchema($field);
 
-		// 'data' is a required field for any Fieldtype, and we're using it to represent our 'date' field
 		$schema['data'] = 'MEDIUMTEXT';
-
+		$schema['keys']['data'] = 'FULLTEXT KEY data (data)'; 
+		
 		return $schema;
 	}
 
@@ -229,6 +230,16 @@ class FieldtypeListLinks extends Fieldtype implements Module {
 		$f->val($field->get('rightOptionsConfig'));
 		return $f;
 		
+	}
+
+
+	public function ___importConfigData(Field $field, array $data) {
+		$left = isset($data['leftOptionsConfig']) ? $data['leftOptionsConfig'] : '';
+		$right = isset($data['rightOptionsConfig']) ? $data['rightOptionsConfig'] : '';
+		$data = parent::___importConfigData($field, $data);
+		$data['leftOptionsConfig'] = $left;
+		$data['rightOptionsConfig'] = $right;
+		return $data;
 	}
 
 
