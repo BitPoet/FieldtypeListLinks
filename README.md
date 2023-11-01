@@ -4,7 +4,7 @@ Fieldtype/Inputfield for mapping items from two lists 1:1 for the ProcessWire CM
 
 # Stability
 
-Experimental - do not use in production environments
+Beta - do not use in production environments without serious testing!
 
 # Description
 
@@ -128,7 +128,7 @@ wire()->addHookAfter('FieldtypeListLinks::getOptions', function(HookEvent $event
 	if($which === 'left')
 		$data['pack'] = 'Pack of';
 	else
-		$data['wolf] = 'Wolves';
+		$data['wolf'] = 'Wolves';
 	$event->return = $data;
 });
 ```
